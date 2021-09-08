@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="classes">
+	<parameter name="url" value="https://login.salesforce.com/"></parameter>
+	<parameter name="uName" value="matschie@testleaf.com"></parameter>
+	<parameter name="pwd" value="SelBootcamp$123"></parameter>
+	
+	<test thread-count="5" name="Test" verbose="5">
+		<classes>
+			<class name="testNg.CreateIndividuals" />
+			<class name="testNg.CreateWorkTypeGroup" />
+			<class name="testNg.UpdateContact" />
+		</classes>
+    </test> 
+    <!-- Test -->
+</suite> <!-- Suite -->

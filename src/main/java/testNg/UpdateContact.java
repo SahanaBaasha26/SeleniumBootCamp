@@ -1,0 +1,115 @@
+package testNg;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
+
+import baseClassTestNg.ProjectSpecification;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class UpdateContact extends ProjectSpecification {
+	
+    @Test
+	public void runUpdateContact() throws InterruptedException {
+		
+		Actions action = new Actions(driver);
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		driver.findElementByClassName("slds-icon-waffle").click();
+		driver.findElementByXPath("//button[text()='View All']").click();
+		action.moveToElement(driver.findElementByXPath("//p[text()='Contacts']")).perform();
+		driver.findElementByXPath("//p[text()='Contacts']").click();
+		List<WebElement> contacts = driver.findElementsByXPath("//span[text()='Contacts']");
+
+		WebElement findContacts = driver.findElementByXPath("//span[text()='Contacts'][1]");
+		executor.executeScript("arguments[0].click()", findContacts);
+		Thread.sleep(3000);
+		List<WebElement> dropdownObjs = driver.findElements(By.xpath(
+				"//a[contains(@title,'Contacts')]//following-sibling::one-app-nav-bar-item-dropdown//lightning-icon"));
+
+		WebElement dropdownBtn = driver.findElement(By.xpath(
+				"//a[contains(@title,'Contacts')]//following-sibling::one-app-nav-bar-item-dropdown//lightning-icon"));
+
+		executor.executeScript("arguments[0].click()", dropdownBtn);
+
+		WebElement allContact = driver.findElement(By.xpath("//span[text()='All Contacts']"));
+		executor.executeScript("arguments[0].click()", allContact);
+		Thread.sleep(3000);
+		// driver.findElementByXPath("(//span[@class='slds-checkbox--faux'])[1]").click();
+
+		List<WebElement> data = driver.findElementsByXPath("//table[contains(@class,'slds-table forceRecordLayout')]/tbody//tr//th");
+		System.out.println("Total contacts :" +data.size());
+		WebElement q;
+
+		for(int i=0;i<data.size();i++)
+		{ 
+			q= data.get(i);
+
+			System.out.println(q.getText()); 
+		}
+
+		driver.findElementByXPath("//input[@name='Contact-search-input']").sendKeys("Sahana",Keys.ENTER);
+		String store =driver.findElementByXPath("//a[@title='Sahana baasha']").getText();
+
+		System.out.println("Get the Contact Text :" +store);
+		Thread.sleep(3000);
+		List<WebElement> clickDropdwn= driver.findElementsByXPath("//a[contains(@class,'rowActionsPlaceHolder ')]/span/span");
+
+		WebElement clickdrop = driver.findElementByXPath("//a[contains(@class,'rowActionsPlaceHolder ')]/span/span");
+		executor.executeScript("arguments[0].click()", clickdrop);
+		driver.findElementByXPath("//a[@title='Edit']").click();
+		
+		driver.findElementByXPath("//input[@name='Email']").clear();
+		driver.findElementByXPath("//input[@name='Email']").sendKeys("aameenait2008@gmail.com");
+
+		List<WebElement> leadSource = driver.findElementsByXPath("(//input[@class='slds-input slds-combobox__input'])[5]");
+
+		WebElement leadSourceClick = driver.findElementByXPath("(//input[@class='slds-input slds-combobox__input'])[5]");
+		executor.executeScript("arguments[0].click()", leadSourceClick);
+
+		driver.findElementByXPath("//span[text()='Partner Referral']").click();
+		
+		driver.findElementByXPath("(//textarea[@name='street'])[1]").clear();
+		driver.findElementByXPath("(//textarea[@name='street'])[1]").sendKeys("Sivan koil atreet,Rasipuram.");
+
+		List<WebElement> level = driver.findElementsByXPath("(//input[@class='slds-input slds-combobox__input'])[6]");
+
+		WebElement levelClick = driver.findElementByXPath("(//input[@class='slds-input slds-combobox__input'])[6]");
+
+		executor.executeScript("arguments[0].click()", levelClick);
+
+		driver.findElementByXPath("//span[text()='Tertiary']").click();
+		driver.findElementByXPath("//input[@name='Title']").clear();
+		driver.findElementByXPath("//input[@name='Title']").sendKeys("Automation Testing");
+		
+		Thread.sleep(3000);
+				
+		driver.findElementByXPath("//button[@name='SaveEdit']").click();
+		
+		driver.findElementByXPath("//span[@class='toastMessage slds-text-heading--small forceActionsText']").isDisplayed();
+		String updated = driver.findElementByXPath("//span[@class='toastMessage slds-text-heading--small forceActionsText']").getText();
+		
+		if(updated.indexOf("Contact \"Mrs.Sahana baasha\"was saved.")<0)
+		{
+			System.out.println("Contact Updated Sucessfully");
+		}
+		else
+		{
+			System.out.println();
+		}
+		WebElement getEmail = driver.findElementByXPath("//a[text()='aameenait2008@gmail.com']");
+		String email=driver.findElementByXPath("//a[text()='aameenait2008@gmail.com']").getText();
+		
+		System.out.println("Updated Email id is :" +email);
+		
+		
+	}
+
+}
